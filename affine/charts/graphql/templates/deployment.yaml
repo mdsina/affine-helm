@@ -81,6 +81,7 @@ spec:
             value: "{{ .Values.app.features.earlyAccessPreview }}"
           - name: FEATURES_SYNC_CLIENT_VERSION_CHECK
             value: "{{ .Values.app.features.syncClientVersionCheck }}"
+          {{ if .Values.app.mailer.enabled }}
           - name: MAILER_HOST
             valueFrom:
               secretKeyRef:
@@ -106,6 +107,8 @@ spec:
               secretKeyRef:
                 name: "{{ .Values.app.mailer.secretName }}"
                 key: sender
+          {{ end }}
+          {{ if .Values.app.payment.enabled }}
           - name: STRIPE_API_KEY
             valueFrom:
               secretKeyRef:
@@ -116,6 +119,7 @@ spec:
               secretKeyRef:
                 name: "{{ .Values.app.payment.stripe.secretName }}"
                 key: stripeWebhookKey
+          {{ end }}
           - name: DOC_MERGE_INTERVAL
             value: "{{ .Values.app.doc.mergeInterval }}"
           {{ if .Values.app.experimental.enableJwstCodec }}

@@ -1,4 +1,4 @@
-{{- if .Values.app.mailer.secretName -}}
+{{- if .Values.app.mailer.enabled -}}
 apiVersion: v1
 kind: Secret
 metadata:

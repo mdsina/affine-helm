@@ -41,6 +41,7 @@ app:
       clientId: ''
       clientSecret: ''
   mailer:
+    enabled: false
     secretName: 'mailer'
     host: 'smtp.gmail.com'
     port: '465'
@@ -53,6 +54,7 @@ app:
     customerIo:
       token: ''
   payment:
+    enabled: false
     stripe:
       secretName: 'stripe'
       apiKey: ''
