@@ -1,5 +1,7 @@
 global:
   app:
+    imagesTag: canary
+    env: beta
     buildType: 'stable'
   ingress:
     enabled: false
@@ -15,6 +17,8 @@ global:
     port: '5432'
     name: 'affine'
     password: ''
+    passwordSecretName: 'pg-postgresql'
+    passwordSecretKey: 'postgres-password'
     gcloud:
       enabled: false
       # use for migration
@@ -29,6 +33,8 @@ global:
     port: '6379'
     username: ''
     password: ''
+    passwordSecretName: 'redis'
+    passwordSecretKey: 'redis-password'
     database: 0
   objectStorage:
     r2:
@@ -38,7 +44,7 @@ global:
       accessKeyId: ''
       secretAccessKey: ''
   gke:
-    enabled: true
+    enabled: false
 
 graphql:
   service:

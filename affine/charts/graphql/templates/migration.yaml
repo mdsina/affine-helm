@@ -15,20 +15,20 @@ spec:
       serviceAccountName: {{ include "graphql.serviceAccountName" . }}
       containers:
       - name: {{ .Chart.Name }}
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.image.repository }}:{{ coalesce .Values.global.app.imagesTag .Values.image.tag .Chart.AppVersion }}"
         command: ["yarn", "predeploy"]
         env:
           - name: NODE_ENV
             value: "{{ .Values.env }}"
           - name: AFFINE_ENV
-            value: "{{ .Release.Namespace }}"
+            value: "{{ .Values.global.app.env | default .Release.Namespace }}"
           - name: DEPLOYMENT_TYPE
             value: "affine"
           - name: DATABASE_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: pg-postgresql
-                key: postgres-password
+                name: {{ .Values.global.database.passwordSecretName | default "pg-postgresql" }}
+                key: {{ .Values.global.database.passwordSecretKey | default "postgres-password"}}
           {{ if not .Values.global.database.gcloud.enabled }}
           - name: DATABASE_URL
             value: postgres://{{ .Values.global.database.user }}:$(DATABASE_PASSWORD)@{{ .Values.global.database.url }}:{{ .Values.global.database.port }}/{{ .Values.global.database.name }}
@@ -59,4 +59,4 @@ spec:
             cpu: '100m'
             memory: '200Mi'
       restartPolicy: Never
-  backoffLimit: 1
+  backoffLimit: 15

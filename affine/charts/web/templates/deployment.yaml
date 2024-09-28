@@ -25,11 +25,11 @@ spec:
       serviceAccountName: {{ include "web.serviceAccountName" . }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}:{{ coalesce .Values.global.app.imagesTag .Values.image.tag .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: AFFINE_ENV
-            value: "{{ .Release.Namespace }}"
+            value: "{{ .Values.global.app.env | default .Release.Namespace }}"
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
