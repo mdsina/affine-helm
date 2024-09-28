@@ -1,8 +1,10 @@
 global:
   app:
-    imagesTag: canary
-    env: beta
+    deploymentType: affine # affine or selfhosted
+    imagesTag: stable # stable, canary, etc
+    env: beta # dev, beta, production
     buildType: 'stable'
+    nodeEnv: 'production'
   ingress:
     enabled: false
     className: ''

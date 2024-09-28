@@ -38,11 +38,11 @@ spec:
                 name: "{{ .Values.global.secret.secretName }}"
                 key: key
           - name: NODE_ENV
-            value: "{{ .Values.env }}"
+            value: "{{ .Values.global.app.nodeEnv | default .Values.env }}"
           - name: NO_COLOR
             value: "1"
           - name: DEPLOYMENT_TYPE
-            value: "affine"
+            value: {{ .Values.global.app.deploymentType | default "affine" }}
           - name: SERVER_FLAVOR
             value: "sync"
           - name: AFFINE_ENV

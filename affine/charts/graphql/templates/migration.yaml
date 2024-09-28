@@ -19,11 +19,11 @@ spec:
         command: ["yarn", "predeploy"]
         env:
           - name: NODE_ENV
-            value: "{{ .Values.env }}"
+            value: "{{ .Values.global.app.nodeEnv | default .Values.env }}"
           - name: AFFINE_ENV
             value: "{{ .Values.global.app.env | default .Release.Namespace }}"
           - name: DEPLOYMENT_TYPE
-            value: "affine"
+            value: {{ .Values.global.app.deploymentType | default "affine" }}
           - name: DATABASE_PASSWORD
             valueFrom:
               secretKeyRef:
