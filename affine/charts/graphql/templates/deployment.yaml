@@ -28,23 +28,6 @@ spec:
           image: "{{ .Values.image.repository }}:{{ coalesce .Values.global.app.imagesTag .Values.image.tag .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-          - name: AFFINE_PRIVATE_KEY
-            valueFrom:
-              secretKeyRef:
-                name: "{{ .Values.global.secret.secretName }}"
-                key: key
-          - name: NODE_ENV
-            value: "{{ .Values.global.app.nodeEnv | default .Values.env }}"
-          - name: NODE_OPTIONS
-            value: "--max-old-space-size=4096"
-          - name: NO_COLOR
-            value: "1"
-          - name: DEPLOYMENT_TYPE
-            value: {{ .Values.global.app.deploymentType | default "affine" }}
-          - name: SERVER_FLAVOR
-            value: "graphql"
-          - name: AFFINE_ENV
-            value: "{{ .Values.global.app.env | default .Release.Namespace }}"
           - name: DATABASE_PASSWORD
             valueFrom:
               secretKeyRef:

@@ -1,10 +1,6 @@
 global:
   app:
-    deploymentType: affine # affine or selfhosted
     imagesTag: stable # stable, canary, etc
-    env: beta # dev, beta, production
-    buildType: 'stable'
-    nodeEnv: 'production'
   ingress:
     enabled: false
     className: ''
@@ -51,25 +47,6 @@ global:
 graphql:
   service:
     type: ClusterIP
-    port: 3000
-    annotations:
-      cloud.google.com/backend-config: '{"default": "affine-api-backendconfig"}'
-
-sync:
-  service:
-    type: ClusterIP
     port: 3010
     annotations:
       cloud.google.com/backend-config: '{"default": "affine-api-backendconfig"}'
-
-renderer:
-  service:
-    type: ClusterIP
-    port: 3000
-    annotations:
-      cloud.google.com/backend-config: '{"default": "affine-api-backendconfig"}'
-
-web:
-  service:
-    type: ClusterIP
-    port: 8080
