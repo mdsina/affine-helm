@@ -35,6 +35,7 @@ global:
     passwordSecretKey: 'redis-password'
     database: 0
   indexer:
+    enabled: false
     provider: ''
     endpoint: ''
     username: ''

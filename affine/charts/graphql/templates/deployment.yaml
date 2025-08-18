@@ -50,6 +50,7 @@ spec:
                 key: {{ .Values.global.redis.passwordSecretKey | default "redis-password" }}
           - name: REDIS_SERVER_DATABASE
             value: "{{ .Values.global.redis.database }}"
+          {{ if .Values.global.indexer.enabled }}
           - name: AFFINE_INDEXER_SEARCH_PROVIDER
             value: "{{ .Values.global.indexer.provider }}"
           - name: AFFINE_INDEXER_SEARCH_ENDPOINT
@@ -59,6 +60,7 @@ spec:
               secretKeyRef:
                 name: {{ .Values.global.indexer.indexerSecretName | default "indexer"}}
                 key: {{ .Values.global.redis.indexerSecretKey | default "indexer-apiKey" }}
+          {{ end }}
           - name: AFFINE_SERVER_PORT
             value: "{{ .Values.service.port }}"
           - name: AFFINE_SERVER_SUB_PATH

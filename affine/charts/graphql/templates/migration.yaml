@@ -36,6 +36,7 @@ spec:
               secretKeyRef:
                 name: {{ .Values.global.redis.passwordSecretName | default "redis"}}
                 key: {{ .Values.global.redis.passwordSecretKey | default "redis-password" }}
+          {{ if .Values.global.indexer.enabled }}
           - name: AFFINE_INDEXER_SEARCH_PROVIDER
             value: "{{ .Values.global.indexer.provider }}"
           - name: AFFINE_INDEXER_SEARCH_ENDPOINT
@@ -45,6 +46,7 @@ spec:
               secretKeyRef:
                 name: {{ .Values.global.indexer.indexerSecretName | default "indexer"}}
                 key: {{ .Values.global.redis.indexerSecretKey | default "indexer-apiKey" }}
+          {{ end }}
         resources:
           requests:
             cpu: '100m'
