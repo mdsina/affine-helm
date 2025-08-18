@@ -16,44 +16,38 @@ spec:
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ coalesce .Values.global.app.imagesTag .Values.image.tag .Chart.AppVersion }}"
-        args:
-          - sh
-          - -c
-          - node ./scripts/self-host-predeploy.js
+        command: ["yarn", "predeploy"]
         env:
           - name: DATABASE_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.global.database.passwordSecretName | default "pg-postgresql" }}
                 key: {{ .Values.global.database.passwordSecretKey | default "postgres-password"}}
-          {{ if not .Values.global.database.gcloud.enabled }}
           - name: DATABASE_URL
-            value: postgres://{{ .Values.global.database.user }}:$(DATABASE_PASSWORD)@{{ .Values.global.database.url }}:{{ .Values.global.database.port }}/{{ .Values.global.database.name }}
-          {{ end }}
-          {{ if .Values.global.database.gcloud.enabled }}
-          - name: DATABASE_URL
-            value: postgres://{{ .Values.global.database.user }}:$(DATABASE_PASSWORD)@{{ .Values.global.database.gcloud.cloudSqlInternal }}:{{ .Values.global.database.port }}/{{ .Values.global.database.name }}
-          {{ end }}
-          {{ if .Values.global.objectStorage.r2.enabled }}
-          - name: R2_OBJECT_STORAGE_ACCOUNT_ID
+            value: postgres://{{ .Values.global.database.user }}:$(DATABASE_PASSWORD)@{{ .Values.global.database.host }}:{{ .Values.global.database.port }}/{{ .Values.global.database.name }}
+          - name: REDIS_SERVER_HOST
+            value: "{{ .Values.global.redis.host }}"
+          - name: REDIS_SERVER_PORT
+            value: "{{ .Values.global.redis.port }}"
+          - name: REDIS_SERVER_USER
+            value: "{{ .Values.global.redis.username }}"
+          - name: REDIS_SERVER_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: "{{ .Values.global.objectStorage.r2.secretName }}"
-                key: accountId
-          - name: R2_OBJECT_STORAGE_ACCESS_KEY_ID
+                name: redis
+                key: redis-password
+          - name: AFFINE_INDEXER_SEARCH_PROVIDER
+            value: "{{ .Values.global.indexer.provider }}"
+          - name: AFFINE_INDEXER_SEARCH_ENDPOINT
+            value: "{{ .Values.global.indexer.endpoint }}"
+          - name: AFFINE_INDEXER_SEARCH_API_KEY
             valueFrom:
               secretKeyRef:
-                name: "{{ .Values.global.objectStorage.r2.secretName }}"
-                key: accessKeyId
-          - name: R2_OBJECT_STORAGE_SECRET_ACCESS_KEY
-            valueFrom:
-              secretKeyRef:
-                name: "{{ .Values.global.objectStorage.r2.secretName }}"
-                key: secretAccessKey
-          {{ end }}
+                name: indexer
+                key: indexer-apiKey
         resources:
           requests:
             cpu: '100m'
             memory: '200Mi'
       restartPolicy: Never
-  backoffLimit: 15
+  backoffLimit: 1
