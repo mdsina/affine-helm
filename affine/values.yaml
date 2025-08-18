@@ -39,6 +39,8 @@ global:
     endpoint: ''
     username: ''
     password: ''
+    indexerSecretName: 'indexer'
+    indexerSecretKey: 'indexer-apiKey'
 
 graphql:
   service:

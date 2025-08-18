@@ -57,8 +57,8 @@ spec:
           - name: AFFINE_INDEXER_SEARCH_API_KEY
             valueFrom:
               secretKeyRef:
-                name: indexer
-                key: indexer-apiKey
+                name: {{ .Values.global.indexer.indexerSecretName | default "indexer"}}
+                key: {{ .Values.global.redis.indexerSecretKey | default "indexer-apiKey" }}
           - name: AFFINE_SERVER_PORT
             value: "{{ .Values.service.port }}"
           - name: AFFINE_SERVER_SUB_PATH
