@@ -17,6 +17,14 @@ global:
     password: ''
     passwordSecretName: 'pg-postgresql'
     passwordSecretKey: 'postgres-password'
+    gcloud:
+      enabled: false
+      # use for migration
+      cloudSqlInternal: ''
+      connectionName: ''
+      serviceAccount: ''
+      cloudProxyReplicas: 3
+      proxyPort: '5432'
   redis:
     enabled: true
     host: 'redis-master'
