@@ -52,4 +52,4 @@ spec:
             cpu: '100m'
             memory: '200Mi'
       restartPolicy: Never
-  backoffLimit: 1
+  backoffLimit: 15
